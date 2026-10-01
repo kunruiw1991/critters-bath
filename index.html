@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>萌宠爱洗澡 · Critter Splash! (小鳄鱼爱洗澡 Smiling Critters 版)</title>
+  <link rel="icon" type="image/jpeg" href="icons/dogday.jpg" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Top Navigation & Level Bar -->
+    <header class="top-header">
+      <div class="brand-group">
+        <div class="brand-logo-wrap">
+          <img id="headerCritterIcon" src="icons/dogday.jpg" alt="Critter" class="brand-avatar" />
+          <span class="brand-bath-badge">🛁</span>
+        </div>
+        <div class="brand-titles">
+          <h1>萌宠爱洗澡 <span class="sub-en">Critter Splash!</span></h1>
+          <p class="brand-tagline">划动手指挖开泥土，巧用机关与物态变化，帮 8 只 Smiling Critters 痛快洗个泡泡澡！</p>
+        </div>
+      </div>
+
+      <!-- 8 Critter Chapter Selector -->
+      <nav id="levelNavBar" class="level-nav-bar" aria-label="关卡选择"></nav>
+
+      <div class="header-actions">
+        <button id="btnGuideModal" class="btn-pill btn-info" title="查看物态相克与玩法说明">📖 玩法图鉴</button>
+        <button id="btnSoundToggle" class="btn-pill btn-sound" title="开关音效">🔊 音效: 开</button>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="game-workspace">
+      <!-- Left Column: Critter Bath Status & Physics Legend -->
+      <aside class="side-panel">
+        <!-- Current Bathing Critter Card -->
+        <section class="panel-card critter-stage-card">
+          <div class="critter-card-header">
+            <div class="critter-portrait-ring" id="critterPortraitRing">
+              <img id="sideCritterImg" src="icons/dogday.jpg" alt="DogDay" />
+              <span id="critterMoodBadge" class="critter-mood-badge">🧼 等洗澡</span>
+            </div>
+            <div class="critter-meta">
+              <div class="level-badge-row">
+                <span id="sideLevelBadge" class="badge-level">第 1 关</span>
+                <span id="sideScentBadge" class="badge-scent">☀️ 阳光香草</span>
+              </div>
+              <h2 id="sideCritterName">日犬 DogDay</h2>
+              <p id="sideLevelTitle" class="level-subtitle">阳光初浴 · S型引水渠</p>
+            </div>
+          </div>
+          <div class="speech-bubble" id="critterSpeechBubble">
+            “身上沾满泥巴啦！快用手指划开棕色泥土，让清澈洗澡水流进右下角的浴缸漏斗里吧！”
+          </div>
+        </section>
+
+        <!-- Rubber Duckies & Bathtub Fill Progress -->
+        <section class="panel-card status-metrics-card">
+          <div class="metric-block">
+            <div class="metric-header">
+              <span>🐤 萌宠小黄鸭收集</span>
+              <strong id="duckCountText">0 / 3 只</strong>
+            </div>
+            <div class="duck-slots-row" id="duckSlotsRow">
+              <div class="duck-slot" id="duckSlot0">
+                <span class="duck-icon">🐤</span>
+                <span class="duck-label">1号鸭</span>
+              </div>
+              <div class="duck-slot" id="duckSlot1">
+                <span class="duck-icon">🐤</span>
+                <span class="duck-label">2号鸭</span>
+              </div>
+              <div class="duck-slot" id="duckSlot2">
+                <span class="duck-icon">🐤</span>
+                <span class="duck-label">3号鸭</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="metric-block">
+            <div class="metric-header">
+              <span>🛁 浴缸蓄水进度</span>
+              <strong id="bathProgressText">0% (0 / 25 滴)</strong>
+            </div>
+            <div class="progress-track">
+              <div id="bathProgressBar" class="progress-fill"></div>
+            </div>
+          </div>
+
+          <div class="water-stats-grid">
+            <div class="stat-pill clean">
+              <span class="stat-emoji">💧</span>
+              <div>
+                <small>场内清水</small>
+                <strong id="statCleanDrops">0 滴</strong>
+              </div>
+            </div>
+            <div class="stat-pill ooze">
+              <span class="stat-emoji">🧪</span>
+              <div>
+                <small>噩梦毒水</small>
+                <strong id="statOozeDrops">0 滴</strong>
+              </div>
+            </div>
+            <div class="stat-pill steam">
+              <span class="stat-emoji">💨</span>
+              <div>
+                <small>上升蒸汽</small>
+                <strong id="statSteamDrops">0 团</strong>
+              </div>
+            </div>
+            <div class="stat-pill total-stars">
+              <span class="stat-emoji">⭐</span>
+              <div>
+                <small>全关总鸭鸭</small>
+                <strong id="statTotalDucks">0 / 24</strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Physics & Element Interaction Guide -->
+        <section class="panel-card legend-card">
+          <h3>🧪 物态相克与机关秘籍</h3>
+          <ul class="legend-list">
+            <li>
+              <span class="legend-dot dot-water">💧</span>
+              <div>
+                <strong>清澈洗澡水</strong>：受重力流下，淋满 <b>🐤小黄鸭</b> 并灌入 <b>🚿浴缸漏斗</b> 即可过关。
+              </div>
+            </li>
+            <li>
+              <span class="legend-dot dot-ooze">🧪</span>
+              <div>
+                <strong>噩梦紫毒水</strong>：触碰清水会将其染毒；但<b>毒水能腐蚀消除 🌿绿藻</b>！
+              </div>
+            </li>
+            <li>
+              <span class="legend-dot dot-algae">🌿</span>
+              <div>
+                <strong>吸水绿藻苔藓</strong>：喝到清水会迅速繁殖堵路！请引<b>🧪毒水</b>烧掉它或用<b>✨净水铲</b>。
+              </div>
+            </li>
+            <li>
+              <span class="legend-dot dot-steam">🔥</span>
+              <div>
+                <strong>炭火与冰块冷凝</strong>：清水遇<b>🔥炙热炭火</b>化为<b>💨蒸汽</b>升空，遇顶棚<b>❄️寒冰</b>凝结回清水！
+              </div>
+            </li>
+            <li>
+              <span class="legend-dot dot-switch">🔔</span>
+              <div>
+                <strong>彩色开关与水龙头</strong>：水流冲击<b>🔴🔵开关</b>自动移开同色闸门；点击<b>🚰水龙头</b>或使用上方辅助按钮随时解围！
+              </div>
+            </li>
+          </ul>
+        </section>
+      </aside>
+
+      <!-- Center Column: Interactive Underground Physics Canvas -->
+      <section class="canvas-stage-column">
+        <!-- Toolbar Above Canvas -->
+        <div class="toolbox-bar">
+          <div class="tool-group" role="group" aria-label="地形操作工具">
+            <button id="toolDig" class="tool-btn active" data-tool="dig" title="划动挖开棕色泥土">
+              <span class="tool-icon">⛏️</span>
+              <span>挖土开路</span>
+            </button>
+            <button id="toolFill" class="tool-btn" data-tool="fill" title="修补填回泥土阻挡毒水">
+              <span class="tool-icon">🧱</span>
+              <span>填土堵漏</span>
+            </button>
+            <button id="toolPurify" class="tool-btn" data-tool="purify" title="净化毒水并铲除绿藻">
+              <span class="tool-icon">✨</span>
+              <span>净水除苔</span>
+            </button>
+          </div>
+
+          <div class="helper-group">
+            <button id="btnAddWater" class="action-btn btn-water-boost" title="从水源处额外补充 45 滴清澈洗澡水">
+              🌧️ 加水喷头 <small>+45滴</small>
+            </button>
+            <button id="btnAutoHint" class="action-btn btn-hint" title="自动帮你挖开本关最佳引水路线">
+              💡 一键挖通提示
+            </button>
+            <button id="btnResetLevel" class="action-btn btn-reset" title="重置当前关卡地形与水源">
+              🔄 重玩本关
+            </button>
+          </div>
+        </div>
+
+        <!-- Level Tip Banner -->
+        <div class="level-tip-banner" id="levelTipBanner">
+          <span class="tip-tag">💡 通关秘籍</span>
+          <span id="levelTipText">按住鼠标左键或手指在棕色泥土上拖动即可挖出水道，收集全部 3 只小黄鸭再流进右下角浴缸管道！</span>
+        </div>
+
+        <!-- Main Game Canvas Container -->
+        <div class="canvas-frame" id="canvasFrame">
+          <canvas id="gameCanvas" width="760" height="520"></canvas>
+
+          <!-- Non-blocking Floating Status Toast -->
+          <div id="floatingToast" class="floating-toast hidden"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Level Complete Celebration Modal -->
+    <div id="winModal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+      <div class="modal-card win-modal-card">
+        <div class="win-confetti-badge">🛁✨ 洗香香大成功！ ✨🛁</div>
+        <div class="win-critter-showcase">
+          <div class="win-avatar-wrap">
+            <img id="winCritterImg" src="icons/dogday.jpg" alt="Critter" />
+            <span class="win-bubble-crown">👑🫧</span>
+          </div>
+          <div class="win-critter-info">
+            <h2 id="winTitleText">日犬 DogDay 洗好泡泡澡啦！</h2>
+            <p id="winQuoteText">“哇～暖洋洋的香草泡泡浴太舒服啦！谢谢你帮我引来清澈的泉水！”</p>
+          </div>
+        </div>
+
+        <div class="win-ducks-display" id="winDucksDisplay">
+          <div class="win-duck-item earned">🐤</div>
+          <div class="win-duck-item earned">🐤</div>
+          <div class="win-duck-item earned">🐤</div>
+        </div>
+
+        <div class="win-stats-row">
+          <div class="win-stat-box">
+            <span>本关收集小黄鸭</span>
+            <strong id="winDuckScore">3 / 3 只</strong>
+          </div>
+          <div class="win-stat-box">
+            <span>浴缸洁净度</span>
+            <strong id="winBathPurity">100% 清澈泡泡</strong>
+          </div>
+        </div>
+
+        <div class="modal-btn-row">
+          <button id="btnWinReplay" class="btn-modal secondary">🔄 再洗一次</button>
+          <button id="btnWinNext" class="btn-modal primary">➡️ 下一位萌宠洗澡</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grand Finale All 8 Critters Modal -->
+    <div id="finaleModal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+      <div class="modal-card finale-modal-card">
+        <div class="win-confetti-badge">🌈👑 萌宠温泉大澡堂 · 全员通关大团圆！ 👑🌈</div>
+        <h2>恭喜通关！8 只 Smiling Critters 全部香喷喷！</h2>
+        <p class="finale-desc">你完美掌握了重力引水、机关闸门、毒水蚀藻与蒸汽冷凝，成为了欢乐镇首席温泉工程师！</p>
+        <div id="finaleCrittersGrid" class="finale-critters-grid"></div>
+        <div class="modal-btn-row">
+          <button id="btnFinaleClose" class="btn-modal primary">🛁 继续自由选关玩耍</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Guide / Rules Modal -->
+    <div id="guideModal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+      <div class="modal-card guide-modal-card">
+        <h2>📖 《萌宠爱洗澡 · Critter Splash》玩法与机关图鉴</h2>
+        <div class="guide-grid">
+          <div class="guide-item">
+            <h4>1️⃣ 划动手指挖土引水</h4>
+            <p>在<b>棕色泥土区域</b>按住鼠标或触摸拖动，即可挖出光滑的地下水道。<b>灰色岩石层</b>坚硬不可挖掘，请顺着岩石坡面导流。</p>
+          </div>
+          <div class="guide-item">
+            <h4>2️⃣ 收集 3 只小黄鸭 & 灌满浴缸</h4>
+            <p>每关都有 3 只戴着萌宠项链的<b>🐤小黄鸭</b>，只需 5 滴清水流过即可收集。将 25 滴清水导入右下角的<b>🚿浴缸漏斗管道</b>即可通关！</p>
+          </div>
+          <div class="guide-item">
+            <h4>3️⃣ 毒水与绿藻相克</h4>
+            <p><b>🧪噩梦紫毒水</b>碰到清水会将其污染；但<b>毒水遇到🌿绿藻会互相抵消溶解</b>！遇到绿藻封路时，先引毒水烧穿绿藻，再引清水过关。</p>
+          </div>
+          <div class="guide-item">
+            <h4>4️⃣ 炙热炭火与寒冰冷凝</h4>
+            <p>清水滴落到<b>🔥红热炭火</b>上会沸腾化为<b>💨上升水蒸气</b>，穿过上方障碍后触碰顶棚的<b>❄️蓝色寒冰</b>，又会重新凝结成<b>💧清澈水滴</b>落下！</p>
+          </div>
+        </div>
+        <div class="modal-btn-row">
+          <button id="btnGuideClose" class="btn-modal primary">👍 明白啦，开始挖土！</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
