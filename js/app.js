@@ -1,17 +1,17 @@
 /**
- * 萌宠爱洗澡 · Critter Splash! (Where's My Water? — Smiling Critters Edition)
- * High-DPI HTML5 Canvas Diggable Terrain & Multi-Phase Fluid Physics Engine
+ * Critter Splash! (Where's My Water? — Smiling Critters Edition)
+ * 100% Pure Visual / Zero-Text Kid-Friendly Edition (with Animated Finger Guide 👆)
  */
 
 (() => {
   'use strict';
 
   // Canvas & Terrain Grid Constants
-  const CW = 760;
-  const CH = 520;
+  const CW = 820;
+  const CH = 540;
   const CELL = 4;
-  const GW = Math.floor(CW / CELL); // 190
-  const GH = Math.floor(CH / CELL); // 130
+  const GW = Math.floor(CW / CELL); // 205
+  const GH = Math.floor(CH / CELL); // 135
 
   // Terrain Cell Types
   const EMPTY = 0;
@@ -26,353 +26,240 @@
   const DROP_OOZE = 'ooze';
   const DROP_STEAM = 'steam';
 
-  const REQUIRED_BATH_DROPS = 25;
-  const DUCK_REQUIRED_DROPS = 5;
+  const REQUIRED_BATH_DROPS = 22;
+  const DUCK_REQUIRED_DROPS = 4;
 
   // Bathtub Chamber & Funnel Geometry (Bottom-Right Corner)
   const FUNNEL = {
-    x: 535,
-    y: 412,
-    r: 44
+    x: 575,
+    y: 425,
+    r: 46
   };
   const TUB_CHAMBER = {
-    x: 565,
-    y: 362,
-    w: 175,
-    h: 142
+    x: 608,
+    y: 372,
+    w: 185,
+    h: 146
   };
 
-  // 8 Handcrafted Smiling Critters Levels
+  // 8 Handcrafted Smiling Critters Levels (100% Visual Icon-Driven)
   const LEVELS = [
     {
       id: 1,
-      name: '日犬 DogDay',
-      enName: 'DogDay',
       icon: 'icons/dogday.jpg',
-      scent: '☀️ 阳光香草浴',
-      themeColor: '#ffb300',
-      title: '阳光初浴 · S型引水渠',
-      quote: '“身上沾满泥巴啦！按住鼠标在棕色泥土上拖动，顺着岩石斜坡挖出S型水道，收集3只小黄鸭再流进右下角浴缸吧！”',
-      winQuote: '“汪呜～暖洋洋的阳光香草泡泡浴太舒服啦！谢谢你帮我引来清澈的泉水！”',
-      tip: '第1关秘籍：从左上角水池往下挖，顺着两层灰色石板斜坡引导水流，经过 3 只小黄鸭流进右下角 🚿 浴缸漏斗！',
-      labels: [],
+      iconsOverlay: [],
       setup(api) {
-        api.fillDirtRect(24, 24, 712, 472);
-        // Carve top-left water reservoir
-        api.carveRoundedRect(65, 36, 165, 62, 20);
-        // Slanted rock shelves for S-curve
-        api.drawRockLine(45, 165, 455, 205, 16);
-        api.drawRockLine(710, 290, 245, 335, 16);
-        // Carve air pockets around ducks so player sees targets clearly
-        api.carveCircle(285, 135, 26);
-        api.carveCircle(555, 225, 26);
-        api.carveCircle(165, 355, 26);
-        // Spawn clean water
-        api.spawnPool(78, 44, 140, 46, DROP_WATER, 100);
-        // 3 Ducks
-        api.addDuck(285, 135);
-        api.addDuck(555, 225);
-        api.addDuck(165, 355);
+        api.fillDirtRect(24, 24, 772, 492);
+        api.carveRoundedRect(65, 36, 175, 66, 22);
+        api.drawRockLine(45, 170, 485, 212, 16);
+        api.drawRockLine(755, 298, 255, 345, 16);
+        api.carveCircle(300, 140, 28);
+        api.carveCircle(585, 232, 28);
+        api.carveCircle(175, 365, 28);
+        api.spawnPool(78, 44, 150, 48, DROP_WATER, 105);
+        api.addDuck(300, 140);
+        api.addDuck(585, 232);
+        api.addDuck(175, 365);
       },
       hintPaths: [
-        [[150, 92], [285, 135], [490, 185], [555, 225], [480, 275], [215, 318], [165, 355], [350, 395], [535, 412]]
+        [[150, 92], [300, 140], [515, 190], [585, 232], [500, 282], [225, 325], [175, 365], [375, 405], [575, 425]]
       ]
     },
     {
       id: 2,
-      name: '跳跳兔 Hoppy',
-      enName: 'Hoppy Hopscotch',
       icon: 'icons/hoppy.jpg',
-      scent: '🌿 薄荷柠檬浴',
-      themeColor: '#43a047',
-      title: '双泉汇流 · 岩石V型谷',
-      quote: '“刚跳完泥坑运动会！上面左右有两个清水池，把它们都挖通汇合到中间漏斗，就能装满我的运动活力浴缸啦！”',
-      winQuote: '“耶！薄荷柠檬浴冰爽又提神，我现在能一口气再跳三百下！”',
-      tip: '第2关秘籍：分别挖开左上和右上两个清水池，让两股水流穿过小黄鸭，在中央石槽汇合后导入右下角浴缸！',
-      labels: [],
+      iconsOverlay: [],
       setup(api) {
-        api.fillDirtRect(24, 24, 712, 472);
-        // Left & Right reservoirs
-        api.carveRoundedRect(65, 36, 145, 60, 18);
-        api.carveRoundedRect(425, 36, 145, 60, 18);
-        // Rock V-chutes
-        api.drawRockLine(55, 185, 265, 255, 16);
-        api.drawRockLine(610, 185, 395, 255, 16);
-        api.drawRockLine(225, 345, 480, 395, 16);
-        // Air pockets for ducks
-        api.carveCircle(155, 148, 25);
-        api.carveCircle(485, 148, 25);
-        api.carveCircle(330, 295, 26);
-        // Pools
-        api.spawnPool(75, 44, 125, 44, DROP_WATER, 58);
-        api.spawnPool(435, 44, 125, 44, DROP_WATER, 58);
-        // Ducks
-        api.addDuck(155, 148);
-        api.addDuck(485, 148);
-        api.addDuck(330, 295);
+        api.fillDirtRect(24, 24, 772, 492);
+        api.carveRoundedRect(65, 36, 155, 62, 20);
+        api.carveRoundedRect(455, 36, 155, 62, 20);
+        api.drawRockLine(55, 190, 285, 265, 16);
+        api.drawRockLine(645, 190, 415, 265, 16);
+        api.drawRockLine(235, 355, 515, 405, 16);
+        api.carveCircle(165, 152, 27);
+        api.carveCircle(515, 152, 27);
+        api.carveCircle(350, 305, 28);
+        api.spawnPool(75, 44, 135, 46, DROP_WATER, 60);
+        api.spawnPool(465, 44, 135, 46, DROP_WATER, 60);
+        api.addDuck(165, 152);
+        api.addDuck(515, 152);
+        api.addDuck(350, 305);
       },
       hintPaths: [
-        [[135, 90], [155, 148], [295, 235], [330, 295]],
-        [[495, 90], [485, 148], [365, 235], [330, 295], [505, 375], [535, 412]]
+        [[145, 90], [165, 152], [310, 245], [350, 305], [535, 385], [575, 425]],
+        [[525, 90], [515, 152], [385, 245], [350, 305]]
       ]
     },
     {
       id: 3,
-      name: '抱抱熊 Bobby',
-      enName: 'Bobby BearHug',
       icon: 'icons/bobby.jpg',
-      scent: '🌹 玫瑰花瓣浴',
-      themeColor: '#e53935',
-      title: '爱心机关 · 开启红色闸门',
-      quote: '“通往浴缸的隧道被红色铁闸门挡住啦！先引水去触碰左边的 🔴 红色铃铛开关，闸门就会自动升起哦！”',
-      winQuote: '“好香的玫瑰花瓣泡泡！给你一个大大的香喷喷熊抱～”',
-      tip: '第3关秘籍：先挖水冲击左侧 🔴 红色开关打开右下方的红色闸门，再把水引向右下角浴缸漏斗！',
-      labels: [{ x: 155, y: 185, text: '🔴 触发开关', color: '#ff8a80' }],
+      iconsOverlay: [],
       setup(api) {
-        api.fillDirtRect(24, 24, 712, 472);
-        api.carveRoundedRect(70, 36, 165, 62, 20);
-        // Rock dividers
-        api.drawRockLine(50, 255, 285, 295, 16);
-        api.drawRockLine(430, 225, 430, 330, 18);
-        api.drawRockLine(430, 445, 430, 490, 18);
-        // Switch chamber & duck pockets
-        api.carveCircle(155, 215, 28);
-        api.carveCircle(295, 155, 25);
-        api.carveCircle(355, 355, 26);
-        api.carveCircle(485, 395, 26);
-        // Switch & Gate
-        api.addSwitch('red', '#ff5252', 155, 215);
-        api.addGate('red', '#ff5252', 420, 330, 22, 115, 420, 225);
-        // Water & Ducks
-        api.spawnPool(80, 44, 145, 46, DROP_WATER, 105);
-        api.addDuck(295, 155);
-        api.addDuck(355, 355);
-        api.addDuck(485, 395);
+        api.fillDirtRect(24, 24, 772, 492);
+        api.carveRoundedRect(70, 36, 175, 64, 20);
+        api.drawRockLine(50, 265, 300, 305, 16);
+        api.drawRockLine(460, 230, 460, 340, 18);
+        api.drawRockLine(460, 455, 460, 505, 18);
+        api.carveCircle(165, 222, 30);
+        api.carveCircle(315, 160, 27);
+        api.carveCircle(380, 365, 28);
+        api.carveCircle(518, 405, 28);
+        api.addSwitch('red', '#ff5252', 165, 222);
+        api.addGate('red', '#ff5252', 450, 340, 22, 118, 450, 230);
+        api.spawnPool(80, 44, 155, 48, DROP_WATER, 110);
+        api.addDuck(315, 160);
+        api.addDuck(380, 365);
+        api.addDuck(518, 405);
       },
       hintPaths: [
-        [[135, 92], [155, 215], [305, 268], [355, 355]],
-        [[185, 92], [295, 155], [355, 355], [435, 385], [485, 395], [535, 412]]
+        [[145, 92], [165, 222], [325, 275], [380, 365], [465, 395], [518, 405], [575, 425]],
+        [[195, 92], [315, 160], [380, 365]]
       ]
     },
     {
       id: 4,
-      name: '贪吃猪 PickyPiggy',
-      enName: 'PickyPiggy',
       icon: 'icons/picky.jpg',
-      scent: '🍑 蜜桃果冻浴',
-      themeColor: '#ec407a',
-      title: '排毒引清 · 避开噩梦毒水',
-      quote: '“哎呀！地底下有一滩紫色的 🧪 噩梦毒水！千万别让毒水混进我的蜜桃浴缸，快从右边绕开它或者用『✨净水除苔』净化它！”',
-      winQuote: '“哼哼～粉嫩嫩的蜜桃果冻泡泡浴，闻起来像刚出炉的水蜜桃派一样甜！”',
-      tip: '第4关秘籍：沿着右侧泥土挖出一条干净通道绕开左侧的紫色毒水池（或者用「✨净水除苔」直接把毒水变成清水）！',
-      labels: [{ x: 145, y: 205, text: '🧪 噩梦毒水池', color: '#ea80fc' }],
+      iconsOverlay: [{ x: 155, y: 210, emoji: '☠️' }],
       setup(api) {
-        api.fillDirtRect(24, 24, 712, 472);
-        // Clean pool top
-        api.carveRoundedRect(80, 36, 165, 62, 20);
-        // Toxic Ooze pocket on middle-left with rock basin
-        api.carveRoundedRect(85, 220, 125, 54, 16);
-        api.drawRockLine(75, 282, 225, 282, 16);
-        api.drawRockLine(225, 210, 225, 282, 16);
-        // Left bottom drain pocket for toxic ooze
-        api.carveRoundedRect(35, 385, 150, 85, 18);
-        api.drawRockLine(195, 370, 195, 485, 16);
-        // Duck pockets on the safe right route
-        api.carveCircle(320, 140, 26);
-        api.carveCircle(435, 240, 26);
-        api.carveCircle(480, 355, 26);
-        // Spawn fluids
-        api.spawnPool(90, 44, 145, 46, DROP_WATER, 105);
-        api.spawnPool(95, 228, 105, 38, DROP_OOZE, 26);
-        // Ducks
-        api.addDuck(320, 140);
-        api.addDuck(435, 240);
-        api.addDuck(480, 355);
+        api.fillDirtRect(24, 24, 772, 492);
+        api.carveRoundedRect(80, 36, 175, 64, 20);
+        api.carveRoundedRect(90, 228, 130, 56, 16);
+        api.drawRockLine(78, 292, 235, 292, 16);
+        api.drawRockLine(235, 218, 235, 292, 16);
+        api.carveRoundedRect(38, 395, 155, 90, 18);
+        api.drawRockLine(205, 380, 205, 500, 16);
+        api.carveCircle(340, 145, 28);
+        api.carveCircle(465, 250, 28);
+        api.carveCircle(515, 368, 28);
+        api.spawnPool(90, 44, 155, 48, DROP_WATER, 110);
+        api.spawnPool(100, 236, 110, 40, DROP_OOZE, 26);
+        api.addDuck(340, 145);
+        api.addDuck(465, 250);
+        api.addDuck(515, 368);
       },
       hintPaths: [
-        [[215, 88], [320, 140], [435, 240], [480, 355], [535, 412]]
+        [[225, 90], [340, 145], [465, 250], [515, 368], [575, 425]]
       ]
     },
     {
       id: 5,
-      name: '聪聪象 Bubba',
-      enName: 'Bubba Bubbaphant',
       icon: 'icons/bubba.jpg',
-      scent: '🌊 海盐薄荷浴',
-      themeColor: '#29b6f6',
-      title: '以毒攻藻 · 酸液蚀穿绿藻',
-      quote: '“根据化学原理：清水遇到 🌿 绿藻会让绿藻疯长堵路，但 🧪 紫色毒水能把绿藻彻底腐蚀溶解！先放毒水烧穿绿藻，再放清水吧！”',
-      winQuote: '“太精彩的流体力学实验了！海盐薄荷浴让我的大脑更加清醒啦！”',
-      tip: '第5关秘籍：先挖通右上角 🧪 毒水池，让毒水腐蚀掉中间的 🌿 绿藻并流进左下角废液坑；路通后再挖开左上角 💧 清水池！',
-      labels: [
-        { x: 475, y: 30, text: '🧪 蚀藻毒水', color: '#ea80fc' },
-        { x: 390, y: 192, text: '🌿 吸水绿藻', color: '#81c784' }
+      iconsOverlay: [
+        { x: 505, y: 30, emoji: '🧪' },
+        { x: 415, y: 195, emoji: '🌿' }
       ],
       setup(api) {
-        api.fillDirtRect(24, 24, 712, 472);
-        // Top-left Clean Pool
-        api.carveRoundedRect(65, 36, 155, 60, 18);
-        // Top-right Toxic Ooze Pool
-        api.carveRoundedRect(410, 36, 130, 52, 16);
-        // Central funnel walls with Green Algae plug
-        api.drawRockLine(260, 160, 345, 235, 16);
-        api.drawRockLine(520, 160, 435, 235, 16);
-        // Carve channel and place Algae blockade
-        api.carveRoundedRect(345, 195, 90, 48, 12);
-        api.fillCellTypeRect(352, 208, 76, 24, ALGAE);
-        // Bottom-left waste trap for leftover ooze
-        api.carveRoundedRect(85, 385, 165, 85, 18);
-        api.drawRockLine(265, 360, 265, 485, 16);
-        // Ducks
-        api.carveCircle(215, 150, 25);
-        api.carveCircle(390, 295, 25);
-        api.carveCircle(485, 375, 25);
-        api.addDuck(215, 150);
-        api.addDuck(390, 295);
-        api.addDuck(485, 375);
-        // Fluids
-        api.spawnPool(75, 44, 135, 44, DROP_WATER, 105);
-        api.spawnPool(420, 42, 110, 38, DROP_OOZE, 30);
+        api.fillDirtRect(24, 24, 772, 492);
+        api.carveRoundedRect(65, 36, 165, 62, 18);
+        api.carveRoundedRect(440, 36, 135, 54, 16);
+        api.drawRockLine(280, 165, 368, 242, 16);
+        api.drawRockLine(550, 165, 462, 242, 16);
+        api.carveRoundedRect(368, 200, 94, 50, 12);
+        api.fillCellTypeRect(376, 214, 78, 24, ALGAE);
+        api.carveRoundedRect(90, 395, 175, 90, 18);
+        api.drawRockLine(280, 370, 280, 500, 16);
+        api.carveCircle(230, 155, 27);
+        api.carveCircle(415, 305, 27);
+        api.carveCircle(518, 385, 27);
+        api.addDuck(230, 155);
+        api.addDuck(415, 305);
+        api.addDuck(518, 385);
+        api.spawnPool(75, 44, 145, 46, DROP_WATER, 110);
+        api.spawnPool(450, 42, 115, 38, DROP_OOZE, 30);
       },
       hintPaths: [
-        [[155, 88], [215, 150], [360, 190], [390, 225], [390, 295], [485, 375], [535, 412]]
+        [[165, 90], [230, 155], [385, 198], [415, 232], [415, 305], [518, 385], [575, 425]]
       ]
     },
     {
       id: 6,
-      name: '独角兽 CraftyCorn',
-      enName: 'CraftyCorn',
       icon: 'icons/craftycorn.jpg',
-      scent: '🌈 彩虹云朵浴',
-      themeColor: '#ab47bc',
-      title: '蒸汽升空 · 冰火冷凝魔法',
-      quote: '“中间有高耸的岩石墙挡路！让水滴落到左下角的 🔥 炙热炭火上化作 💨 水蒸气飘过墙头，碰到顶棚的 ❄️ 寒冰就会重新化作彩虹雨落下啦！”',
-      winQuote: '“哇！从云端落下的彩虹温泉雨太浪漫啦，我的灵感源源不断！”',
-      tip: '第6关秘籍：把左上方的水往下挖到 🔥 红炭火上变成 💨 蒸汽升空，再挖通上方通道让蒸汽接触右侧顶棚的 ❄️ 寒冰凝结回水滴！',
-      labels: [
-        { x: 165, y: 462, text: '🔥 炙热炭火 (蒸发成蒸汽)', color: '#ff8a65' },
-        { x: 445, y: 72, text: '❄️ 寒冰顶棚 (凝结成清水)', color: '#80deea' }
+      iconsOverlay: [
+        { x: 175, y: 472, emoji: '🔥' },
+        { x: 475, y: 74, emoji: '❄️' }
       ],
       setup(api) {
-        api.fillDirtRect(24, 24, 712, 472);
-        // Mid-left clean water reservoir (isolated from steam shaft by solid dirt wall!)
-        api.carveRoundedRect(55, 150, 120, 62, 18);
-        // Tall central rock barrier separating left & right halves
-        api.drawRockLine(295, 145, 295, 490, 18);
-        // Rising steam shaft on the right side of left chamber (x: 215..275)
-        api.carveRoundedRect(215, 48, 62, 330, 18);
-        // Bottom-left Hot Coals boiler chamber
-        api.carveRoundedRect(75, 355, 202, 78, 18);
-        api.fillCellTypeRect(85, 422, 180, 18, COALS);
-        api.drawRockLine(65, 444, 280, 444, 14);
-        // Top ceiling Ice Condenser chamber on the right
-        api.carveRoundedRect(340, 42, 215, 76, 20);
-        api.fillCellTypeRect(355, 30, 185, 20, ICE);
-        // Ducks
-        api.carveCircle(115, 275, 25);
-        api.carveCircle(246, 95, 25);
-        api.carveCircle(450, 245, 26);
-        api.addDuck(115, 275);
-        api.addDuck(246, 95);
-        api.addDuck(450, 245);
-        // Spawn clean water
-        api.spawnPool(65, 160, 100, 44, DROP_WATER, 105);
+        api.fillDirtRect(24, 24, 772, 492);
+        api.carveRoundedRect(55, 155, 130, 64, 18);
+        api.drawRockLine(315, 150, 315, 505, 18);
+        api.carveRoundedRect(230, 48, 66, 340, 18);
+        api.carveRoundedRect(75, 365, 218, 82, 18);
+        api.fillCellTypeRect(88, 434, 192, 18, COALS);
+        api.drawRockLine(65, 456, 298, 456, 14);
+        api.carveRoundedRect(365, 42, 225, 78, 20);
+        api.fillCellTypeRect(380, 30, 195, 20, ICE);
+        api.carveCircle(120, 285, 27);
+        api.carveCircle(263, 98, 27);
+        api.carveCircle(480, 255, 28);
+        api.addDuck(120, 285);
+        api.addDuck(263, 98);
+        api.addDuck(480, 255);
+        api.spawnPool(65, 165, 110, 46, DROP_WATER, 110);
       },
       hintPaths: [
-        [[115, 202], [115, 275], [125, 385]],
-        [[246, 75], [385, 72]],
-        [[445, 105], [450, 245], [500, 355], [535, 412]]
+        [[120, 208], [120, 285], [130, 395]],
+        [[263, 78], [410, 74]],
+        [[475, 108], [480, 255], [535, 365], [575, 425]]
       ]
     },
     {
       id: 7,
-      name: '酷酷鸡 KickinChicken',
-      enName: 'KickinChicken',
       icon: 'icons/kickin.jpg',
-      scent: '🍋 酷爽柑橘浴',
-      themeColor: '#fdd835',
-      title: '高压水龙头 · 双重闸门冲浪',
-      quote: '“看到上方的 🚰 高压水龙头了吗？它能持续喷出冲浪泉水！依次冲击 🔵 蓝开关和 🟢 绿开关，一路帅气冲进浴缸吧！”',
-      winQuote: '“酷毙了老铁！这柑橘冲浪浴够劲，我的羽毛都闪闪发光啦！”',
-      tip: '第7关秘籍：上方水池 + 🚰 高压水龙头源源不断供水！先引水碰左中部的 🔵 蓝开关，再顺着斜坡碰 🟢 绿开关，直达浴缸！',
-      labels: [{ x: 375, y: 42, text: '🚰 高压水龙头', color: '#80deea' }],
+      iconsOverlay: [],
       setup(api) {
-        api.fillDirtRect(24, 24, 712, 472);
-        api.carveRoundedRect(65, 36, 160, 60, 18);
-        api.carveCircle(375, 72, 30);
-        // Rock ramps
-        api.drawRockLine(55, 215, 265, 255, 16);
-        api.drawRockLine(565, 195, 355, 255, 16);
-        api.drawRockLine(210, 350, 430, 395, 16);
-        // Switches & Gates
-        api.carveCircle(210, 200, 26);
-        api.carveCircle(415, 210, 26);
-        api.addSwitch('blue', '#29b6f6', 210, 200);
-        api.addSwitch('green', '#66bb6a', 415, 210);
-        api.addGate('blue', '#29b6f6', 285, 260, 110, 20, 165, 260);
-        api.addGate('green', '#66bb6a', 455, 335, 22, 115, 455, 225);
-        // Continuous Faucet Spout
-        api.addSpout(375, 72, 0.45, 1.35, DROP_WATER);
-        // Ducks
-        api.carveCircle(155, 140, 24);
-        api.carveCircle(335, 315, 25);
-        api.carveCircle(495, 390, 25);
-        api.addDuck(155, 140);
-        api.addDuck(335, 315);
-        api.addDuck(495, 390);
-        // Pool
-        api.spawnPool(75, 44, 140, 44, DROP_WATER, 90);
+        api.fillDirtRect(24, 24, 772, 492);
+        api.carveRoundedRect(65, 36, 170, 62, 18);
+        api.carveCircle(400, 74, 32);
+        api.drawRockLine(55, 222, 285, 262, 16);
+        api.drawRockLine(600, 202, 380, 262, 16);
+        api.drawRockLine(225, 360, 460, 405, 16);
+        api.carveCircle(225, 208, 28);
+        api.carveCircle(445, 218, 28);
+        api.addSwitch('blue', '#29b6f6', 225, 208);
+        api.addSwitch('green', '#66bb6a', 445, 218);
+        api.addGate('blue', '#29b6f6', 305, 268, 118, 20, 175, 268);
+        api.addGate('green', '#66bb6a', 485, 345, 22, 118, 485, 230);
+        api.addSpout(400, 74, 0.45, 1.35, DROP_WATER);
+        api.carveCircle(165, 145, 26);
+        api.carveCircle(358, 325, 27);
+        api.carveCircle(530, 400, 27);
+        api.addDuck(165, 145);
+        api.addDuck(358, 325);
+        api.addDuck(530, 400);
+        api.spawnPool(75, 44, 150, 46, DROP_WATER, 95);
       },
       hintPaths: [
-        [[145, 88], [155, 140], [210, 200], [335, 260], [335, 315]],
-        [[375, 88], [415, 210], [335, 260], [335, 315], [445, 382], [495, 390], [535, 412]]
+        [[155, 90], [165, 145], [225, 208], [358, 268], [358, 325], [475, 392], [530, 400], [575, 425]],
+        [[400, 90], [445, 218], [358, 268]]
       ]
     },
     {
       id: 8,
-      name: '瞌睡猫 CatNap',
-      enName: 'CatNap',
       icon: 'icons/catnap.jpg',
-      scent: '💜 薰衣草月光温泉',
-      themeColor: '#7e57c2',
-      title: '月光温泉 · 终极泡泡盛典',
-      quote: '“呼噜噜……睡前最喜欢泡一壶温暖的薰衣草月光浴了。烧穿绿藻、打开紫色月光闸门，帮我把温泉水引过来好吗？”',
-      winQuote: '“呼噜噜……暖呼呼的薰衣草泡泡浴，今晚全员都能做一个甜美的香香好梦啦……🌙✨”',
-      tip: '第8关终极秘籍：既可以用右上角 🧪 毒水烧穿中间 🌿 绿藻（或用 ✨ 净水铲），再引左上角清水触发 🟣 紫色开关，开启月光温泉！',
-      labels: [
-        { x: 185, y: 168, text: '🟣 月光开关', color: '#ce93d8' },
-        { x: 402, y: 158, text: '🌿 绿藻封路', color: '#81c784' }
-      ],
+      iconsOverlay: [{ x: 430, y: 162, emoji: '🌿' }],
       setup(api) {
-        api.fillDirtRect(24, 24, 712, 472);
-        // Top-left Clean Pool + Faucet
-        api.carveRoundedRect(65, 36, 165, 60, 18);
-        api.addSpout(115, 56, 0.35, 1.25, DROP_WATER);
-        // Top-right Ooze pocket above Algae
-        api.carveRoundedRect(370, 36, 120, 50, 16);
-        // Algae barrier in middle-right chute
-        api.carveRoundedRect(355, 160, 95, 44, 12);
-        api.fillCellTypeRect(362, 170, 80, 22, ALGAE);
-        // Rock channels
-        api.drawRockLine(55, 220, 260, 260, 16);
-        api.drawRockLine(245, 350, 435, 395, 16);
-        // Purple switch & gate
-        api.carveCircle(185, 195, 26);
-        api.addSwitch('purple', '#ab47bc', 185, 195);
-        api.addGate('purple', '#ab47bc', 455, 335, 22, 115, 455, 225);
-        // Ducks
-        api.carveCircle(165, 130, 24);
-        api.carveCircle(340, 298, 25);
-        api.carveCircle(495, 390, 25);
-        api.addDuck(165, 130);
-        api.addDuck(340, 298);
-        api.addDuck(495, 390);
-        // Pools
-        api.spawnPool(75, 44, 145, 44, DROP_WATER, 95);
-        api.spawnPool(380, 42, 100, 36, DROP_OOZE, 26);
+        api.fillDirtRect(24, 24, 772, 492);
+        api.carveRoundedRect(65, 36, 175, 62, 18);
+        api.addSpout(120, 58, 0.35, 1.25, DROP_WATER);
+        api.carveRoundedRect(395, 36, 128, 52, 16);
+        api.carveRoundedRect(380, 165, 100, 46, 12);
+        api.fillCellTypeRect(388, 176, 84, 22, ALGAE);
+        api.drawRockLine(55, 228, 278, 268, 16);
+        api.drawRockLine(260, 360, 465, 405, 16);
+        api.carveCircle(198, 202, 28);
+        api.addSwitch('purple', '#ab47bc', 198, 202);
+        api.addGate('purple', '#ab47bc', 485, 345, 22, 118, 485, 230);
+        api.carveCircle(175, 135, 26);
+        api.carveCircle(362, 308, 27);
+        api.carveCircle(530, 400, 27);
+        api.addDuck(175, 135);
+        api.addDuck(362, 308);
+        api.addDuck(530, 400);
+        api.spawnPool(75, 44, 155, 46, DROP_WATER, 100);
+        api.spawnPool(405, 42, 105, 38, DROP_OOZE, 26);
       },
       hintPaths: [
-        [[155, 88], [165, 130], [185, 195], [340, 298], [440, 380], [495, 390], [535, 412]]
+        [[165, 90], [175, 135], [198, 202], [362, 308], [470, 390], [530, 400], [575, 425]]
       ]
     }
   ];
@@ -505,6 +392,7 @@
     sparkles: [],
     bathDropsCollected: 0,
     levelWon: false,
+    hasDugThisLevel: false,
     progressByLevel: JSON.parse(localStorage.getItem('critter_splash_progress_v1') || '{}'),
     isPointerDown: false,
     lastPointer: null,
@@ -529,27 +417,14 @@
   const canvas = document.getElementById('gameCanvas');
   const ctx = canvas.getContext('2d');
   const levelNavBar = document.getElementById('levelNavBar');
-  const headerCritterIcon = document.getElementById('headerCritterIcon');
   const sideCritterImg = document.getElementById('sideCritterImg');
   const critterMoodBadge = document.getElementById('critterMoodBadge');
-  const sideLevelBadge = document.getElementById('sideLevelBadge');
-  const sideScentBadge = document.getElementById('sideScentBadge');
-  const sideCritterName = document.getElementById('sideCritterName');
-  const sideLevelTitle = document.getElementById('sideLevelTitle');
-  const critterSpeechBubble = document.getElementById('critterSpeechBubble');
-  const duckCountText = document.getElementById('duckCountText');
-  const bathProgressText = document.getElementById('bathProgressText');
   const bathProgressBar = document.getElementById('bathProgressBar');
-  const statCleanDrops = document.getElementById('statCleanDrops');
-  const statOozeDrops = document.getElementById('statOozeDrops');
-  const statSteamDrops = document.getElementById('statSteamDrops');
-  const statTotalDucks = document.getElementById('statTotalDucks');
-  const levelTipText = document.getElementById('levelTipText');
   const floatingToast = document.getElementById('floatingToast');
 
   let toastTimer = null;
-  function showToast(msg, duration = 2300) {
-    floatingToast.textContent = msg;
+  function showToast(emojiMsg, duration = 1500) {
+    floatingToast.textContent = emojiMsg;
     floatingToast.classList.remove('hidden');
     if (toastTimer) clearTimeout(toastTimer);
     toastTimer = setTimeout(() => {
@@ -557,7 +432,6 @@
     }, duration);
   }
 
-  // Terrain Grid Helpers
   function getCell(gx, gy) {
     if (gx < 0 || gx >= GW || gy < 0 || gy >= GH) return ROCK;
     return state.grid[gy * GW + gx];
@@ -672,7 +546,7 @@
       state.ducks.push({
         x,
         y,
-        r: 23,
+        r: 25,
         dropsAbsorbed: 0,
         collected: false,
         bobOffset: Math.random() * Math.PI * 2,
@@ -686,7 +560,7 @@
         color,
         x,
         y,
-        r: 18,
+        r: 20,
         triggered: false
       });
     },
@@ -717,12 +591,11 @@
         type,
         active: true,
         emitted: 0,
-        maxEmit: 85
+        maxEmit: 90
       });
     }
   };
 
-  // Load a Specific Level
   function loadLevel(idx) {
     state.currentLevelIdx = (idx + LEVELS.length) % LEVELS.length;
     const lvl = LEVELS[state.currentLevelIdx];
@@ -735,6 +608,7 @@
     state.sparkles = [];
     state.bathDropsCollected = 0;
     state.levelWon = false;
+    state.hasDugThisLevel = false;
 
     state.grid.fill(ROCK);
     for (let gy = 2; gy < GH - 2; gy++) {
@@ -745,7 +619,6 @@
 
     lvl.setup(builderApi);
 
-    // Always carve Bathtub Chamber & Intake Funnel in Bottom-Right
     builderApi.carveRoundedRect(
       TUB_CHAMBER.x - 8,
       TUB_CHAMBER.y - 6,
@@ -756,12 +629,11 @@
     builderApi.carveCircle(FUNNEL.x, FUNNEL.y, FUNNEL.r + 14, EMPTY, true);
 
     state.terrainDirty = true;
-    updateSidebarUI();
+    updateVisualHUD();
     renderLevelNav();
     document.getElementById('winModal').classList.add('hidden');
   }
 
-  // Render Offscreen Terrain Texture when Dirty
   function rebuildTerrainLayer() {
     tCtx.clearRect(0, 0, CW, CH);
 
@@ -771,7 +643,6 @@
     tCtx.fillStyle = bgGrad;
     tCtx.fillRect(0, 0, CW, CH);
 
-    // Subtle tile grid lines in carved areas
     tCtx.strokeStyle = 'rgba(129, 212, 250, 0.06)';
     tCtx.lineWidth = 1;
     for (let x = 0; x < CW; x += 28) {
@@ -802,7 +673,7 @@
             getCell(gx, gy + 1) === EMPTY;
 
           if (isEdge) {
-            tCtx.fillStyle = '#c88746';
+            tCtx.fillStyle = '#d4924c';
           } else {
             const checker = ((gx >> 1) + (gy >> 1)) % 3;
             tCtx.fillStyle = checker === 0 ? '#8d5524' : checker === 1 ? '#7f4b1e' : '#965c28';
@@ -832,14 +703,13 @@
     state.terrainDirty = false;
   }
 
-  // Carve / Fill / Purify Along Pointer Segment
   function applyToolAtPoint(px, py, customRadius = null) {
     if (px > TUB_CHAMBER.x - 10 && py > TUB_CHAMBER.y - 10) {
       return;
     }
 
     if (state.activeTool === 'dig') {
-      const radius = customRadius || 24;
+      const radius = customRadius || 26;
       const gx0 = Math.max(2, Math.floor((px - radius) / CELL));
       const gy0 = Math.max(2, Math.floor((py - radius) / CELL));
       const gx1 = Math.min(GW - 3, Math.ceil((px + radius) / CELL));
@@ -863,6 +733,7 @@
       }
 
       if (dugAny) {
+        state.hasDugThisLevel = true;
         state.terrainDirty = true;
         sfx.playDig();
         for (let i = 0; i < 2; i++) {
@@ -872,13 +743,13 @@
             vx: (Math.random() - 0.5) * 2.5,
             vy: -Math.random() * 2.2,
             color: '#d7995b',
-            r: 3,
+            r: 3.5,
             life: 16
           });
         }
       }
     } else if (state.activeTool === 'fill') {
-      const radius = 16;
+      const radius = 18;
       const gx0 = Math.max(2, Math.floor((px - radius) / CELL));
       const gy0 = Math.max(2, Math.floor((py - radius) / CELL));
       const gx1 = Math.min(GW - 3, Math.ceil((px + radius) / CELL));
@@ -903,7 +774,7 @@
         sfx.playDig();
       }
     } else if (state.activeTool === 'purify') {
-      const radius = 36;
+      const radius = 38;
       const gx0 = Math.max(2, Math.floor((px - radius) / CELL));
       const gy0 = Math.max(2, Math.floor((py - radius) / CELL));
       const gx1 = Math.min(GW - 3, Math.ceil((px + radius) / CELL));
@@ -942,7 +813,7 @@
           vx: 0,
           vy: -1.5,
           color: '#80deea',
-          r: 4,
+          r: 4.5,
           life: 20
         });
       }
@@ -958,7 +829,6 @@
     }
   }
 
-  // Check if a point is blocked by terrain or closed gate
   function isBlockedAt(px, py) {
     const gx = Math.floor(px / CELL);
     const gy = Math.floor(py / CELL);
@@ -975,11 +845,9 @@
     return EMPTY;
   }
 
-  // Fluid Physics & Element Interaction Step
   function stepPhysics() {
     state.frameTick++;
 
-    // 1. Emit from active spouts
     state.spouts.forEach(sp => {
       if (sp.active && state.frameTick % 4 === 0 && sp.emitted < sp.maxEmit) {
         state.drops.push({
@@ -993,7 +861,6 @@
       }
     });
 
-    // 2. Animate Gates
     state.gates.forEach(g => {
       if (g.isOpen && g.openProgress < 1) {
         g.openProgress = Math.min(1, g.openProgress + 0.05);
@@ -1002,7 +869,6 @@
       }
     });
 
-    // 3. Spatial Hash Grid for Fast Liquid Repulsion & Ooze Contamination
     const BUCKET = 14;
     const BW = Math.ceil(CW / BUCKET);
     const BH = Math.ceil(CH / BUCKET);
@@ -1066,7 +932,6 @@
       }
     }
 
-    // 4. Update Each Droplet Position, Slope Sliding, Phase Change & Goals
     const survivingDrops = [];
     for (let i = 0; i < activeDrops.length; i++) {
       const d = activeDrops[i];
@@ -1164,7 +1029,6 @@
           }
         }
 
-        // Smooth Sliding along Horizontal, Vertical & Diagonal Slopes!
         if (isBlockedAt(d.x + d.vx, d.y) === EMPTY) {
           d.x += d.vx;
           d.vy *= -0.2;
@@ -1173,7 +1037,6 @@
           d.vx *= -0.35;
         }
 
-        // Downhill diagonal step probing for liquid (or uphill for steam)
         if (d.type !== DROP_STEAM) {
           const openDR = isBlockedAt(d.x + 6, d.y + 4) === EMPTY;
           const openDL = isBlockedAt(d.x - 6, d.y + 4) === EMPTY;
@@ -1194,7 +1057,6 @@
             d.y -= 3;
           }
         } else {
-          // Rising steam diagonal ceiling slide
           const openUR = isBlockedAt(d.x + 6, d.y - 4) === EMPTY;
           const openUL = isBlockedAt(d.x - 6, d.y - 4) === EMPTY;
           if (openUR && !openUL) {
@@ -1215,7 +1077,7 @@
         if (!sw.triggered && Math.hypot(d.x - sw.x, d.y - sw.y) <= sw.r + 7) {
           sw.triggered = true;
           sfx.playSwitchOpen();
-          showToast('🔔 机关触发！彩色闸门已开启！');
+          showToast('🔔 ➡️ 🔓');
           state.gates.forEach(g => {
             if (g.id === sw.id) g.isOpen = true;
           });
@@ -1228,23 +1090,23 @@
           const duck = state.ducks[k];
           if (!duck.collected && Math.hypot(d.x - duck.x, d.y - duck.y) <= duck.r + 6) {
             duck.dropsAbsorbed++;
-            duck.scaleAnim = 1.25;
+            duck.scaleAnim = 1.3;
             if (duck.dropsAbsorbed >= DUCK_REQUIRED_DROPS) {
               duck.collected = true;
               sfx.playDuckQuack();
-              showToast('🐤 收集到 1 只萌宠小黄鸭！');
-              for (let p = 0; p < 10; p++) {
+              showToast('🐤 ✨');
+              for (let p = 0; p < 12; p++) {
                 state.sparkles.push({
                   x: duck.x,
                   y: duck.y,
-                  vx: (Math.random() - 0.5) * 4,
-                  vy: (Math.random() - 0.5) * 4,
+                  vx: (Math.random() - 0.5) * 4.5,
+                  vy: (Math.random() - 0.5) * 4.5,
                   color: '#ffd54f',
-                  r: 4.5,
+                  r: 5,
                   life: 26
                 });
               }
-              updateSidebarUI();
+              updateVisualHUD();
             }
           }
         }
@@ -1256,15 +1118,15 @@
           state.bathDropsCollected++;
           sfx.playSplash();
           state.sparkles.push({
-            x: TUB_CHAMBER.x + 55 + Math.random() * 75,
-            y: TUB_CHAMBER.y + 78,
+            x: TUB_CHAMBER.x + 55 + Math.random() * 80,
+            y: TUB_CHAMBER.y + 82,
             vx: (Math.random() - 0.5) * 1.5,
             vy: -1.5 - Math.random(),
             color: '#80deea',
-            r: 4,
+            r: 4.5,
             life: 25
           });
-          updateSidebarUI();
+          updateVisualHUD();
           if (!state.levelWon && state.bathDropsCollected >= REQUIRED_BATH_DROPS) {
             onLevelComplete();
           }
@@ -1272,8 +1134,8 @@
         } else if (d.type === DROP_OOZE) {
           d.vx = -2.2;
           d.vy = -1.5;
-          if (state.frameTick % 30 === 0) {
-            showToast('⚠️ 浴缸滤网拦截了噩梦毒水！请用「✨净水除苔」净化它！');
+          if (state.frameTick % 35 === 0) {
+            showToast('☠️ ➡️ ✨');
           }
         }
       }
@@ -1292,13 +1154,8 @@
       sp.life--;
       if (sp.life <= 0) state.sparkles.splice(i, 1);
     }
-
-    if (state.frameTick % 12 === 0) {
-      updateWaterCounters();
-    }
   }
 
-  // Handle Level Completion & Persistence
   function onLevelComplete() {
     state.levelWon = true;
     sfx.playWinFanfare();
@@ -1310,18 +1167,15 @@
     localStorage.setItem('critter_splash_progress_v1', JSON.stringify(state.progressByLevel));
 
     renderLevelNav();
-    updateSidebarUI();
+    updateVisualHUD();
 
     document.getElementById('winCritterImg').src = lvl.icon;
-    document.getElementById('winTitleText').textContent = `${lvl.name} 洗好泡泡澡啦！`;
-    document.getElementById('winQuoteText').textContent = lvl.winQuote;
-    document.getElementById('winDuckScore').textContent = `${earnedDucks} / 3 只`;
 
     const winDucksDisplay = document.getElementById('winDucksDisplay');
     winDucksDisplay.innerHTML = '';
     for (let i = 0; i < 3; i++) {
       const div = document.createElement('div');
-      div.className = 'win-duck-item' + (i < earnedDucks ? ' earned' : '');
+      div.className = 'win-duck-big' + (i < earnedDucks ? ' earned' : '');
       div.textContent = '🐤';
       winDucksDisplay.appendChild(div);
     }
@@ -1343,16 +1197,14 @@
       const card = document.createElement('div');
       card.className = 'finale-critter-tile';
       card.innerHTML = `
-        <img src="${lvl.icon}" alt="${lvl.name}" />
-        <strong>${lvl.name}</strong>
-        <span>${'🐤'.repeat(Math.max(1, ducks))} 香喷喷</span>
+        <img src="${lvl.icon}" alt="" />
+        <span>${'🐤'.repeat(Math.max(1, ducks))}</span>
       `;
       grid.appendChild(card);
     });
     document.getElementById('finaleModal').classList.remove('hidden');
   }
 
-  // Render Complete Scene onto Main Canvas
   function renderScene() {
     if (state.terrainDirty) {
       rebuildTerrainLayer();
@@ -1361,15 +1213,15 @@
     ctx.clearRect(0, 0, CW, CH);
     ctx.drawImage(terrainCanvas, 0, 0);
 
-    // Draw Level Callout Labels (Coals, Ice, Algae, Switches)
+    // Draw Pure Emoji Overlays (🔥, ❄️, 🌿, ☠️)
     const lvl = LEVELS[state.currentLevelIdx];
-    if (lvl.labels) {
-      lvl.labels.forEach(lb => {
+    if (lvl.iconsOverlay) {
+      lvl.iconsOverlay.forEach(ic => {
         ctx.save();
-        ctx.font = 'bold 11px sans-serif';
+        ctx.font = '24px sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillStyle = lb.color || '#ffffff';
-        ctx.fillText(lb.text, lb.x, lb.y);
+        ctx.textBaseline = 'middle';
+        ctx.fillText(ic.emoji, ic.x, ic.y);
         ctx.restore();
       });
     }
@@ -1390,11 +1242,10 @@
       ctx.strokeStyle = '#ffffff';
       ctx.stroke();
 
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 14px sans-serif';
+      ctx.font = '18px sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(sw.triggered ? '✓' : '🔔', sw.x, sw.y);
+      ctx.fillText(sw.triggered ? '🔓' : '🔔', sw.x, sw.y);
       ctx.restore();
     });
 
@@ -1402,7 +1253,7 @@
       ctx.save();
       ctx.fillStyle = g.color;
       ctx.strokeStyle = '#ffffff';
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 2.5;
       ctx.beginPath();
       ctx.roundRect(g.x, g.y, g.w, g.h, 6);
       ctx.fill();
@@ -1425,49 +1276,45 @@
     state.spouts.forEach(sp => {
       ctx.save();
       ctx.beginPath();
-      ctx.arc(sp.x, sp.y, 16, 0, Math.PI * 2);
+      ctx.arc(sp.x, sp.y, 18, 0, Math.PI * 2);
       ctx.fillStyle = '#0288d1';
       ctx.fill();
       ctx.lineWidth = 3;
       ctx.strokeStyle = '#b3e5fc';
       ctx.stroke();
-      ctx.font = '16px sans-serif';
+      ctx.font = '20px sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText('🚰', sp.x, sp.y);
       ctx.restore();
     });
 
-    // Draw 3 Rubber Ducks with Water Progress Rings
-    state.ducks.forEach((duck, idx) => {
+    // Draw 3 Rubber Ducks (Pure Visual, Zero Text)
+    state.ducks.forEach(duck => {
       if (duck.collected) return;
       duck.scaleAnim += (1 - duck.scaleAnim) * 0.15;
-      const bobY = Math.sin(state.frameTick * 0.07 + duck.bobOffset) * 3;
+      const bobY = Math.sin(state.frameTick * 0.07 + duck.bobOffset) * 3.5;
 
       ctx.save();
       ctx.translate(duck.x, duck.y + bobY);
       ctx.scale(duck.scaleAnim, duck.scaleAnim);
 
       ctx.beginPath();
-      ctx.arc(0, 0, duck.r + 3, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255, 213, 79, 0.16)';
+      ctx.arc(0, 0, duck.r + 4, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255, 213, 79, 0.2)';
       ctx.fill();
 
       const ratio = Math.min(1, duck.dropsAbsorbed / DUCK_REQUIRED_DROPS);
       ctx.beginPath();
       ctx.arc(0, 0, duck.r, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * ratio);
       ctx.strokeStyle = '#29b6f6';
-      ctx.lineWidth = 4;
+      ctx.lineWidth = 4.5;
       ctx.stroke();
 
-      ctx.font = '26px sans-serif';
+      ctx.font = '32px sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText('🐤', 0, 1);
-
-      ctx.font = 'bold 10px sans-serif';
-      ctx.fillStyle = '#fff59d';
-      ctx.fillText(`${idx + 1}号鸭`, 0, duck.r + 10);
+      ctx.fillText('🐤', 0, 2);
       ctx.restore();
     });
 
@@ -1479,26 +1326,31 @@
       const d = state.drops[i];
       ctx.beginPath();
       if (d.type === DROP_WATER) {
-        ctx.arc(d.x, d.y, 6.2, 0, Math.PI * 2);
+        ctx.arc(d.x, d.y, 6.5, 0, Math.PI * 2);
         ctx.fillStyle = '#29b6f6';
         ctx.fill();
         ctx.beginPath();
-        ctx.arc(d.x - 1.8, d.y - 1.8, 2.2, 0, Math.PI * 2);
+        ctx.arc(d.x - 1.8, d.y - 1.8, 2.3, 0, Math.PI * 2);
         ctx.fillStyle = '#b3e5fc';
         ctx.fill();
       } else if (d.type === DROP_OOZE) {
-        ctx.arc(d.x, d.y, 6.4, 0, Math.PI * 2);
+        ctx.arc(d.x, d.y, 6.6, 0, Math.PI * 2);
         ctx.fillStyle = '#8e24aa';
         ctx.fill();
         ctx.beginPath();
-        ctx.arc(d.x - 1.5, d.y - 1.5, 2.2, 0, Math.PI * 2);
+        ctx.arc(d.x - 1.5, d.y - 1.5, 2.3, 0, Math.PI * 2);
         ctx.fillStyle = '#ea80fc';
         ctx.fill();
       } else if (d.type === DROP_STEAM) {
-        ctx.arc(d.x, d.y, 7.2, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(224, 247, 250, 0.72)';
+        ctx.arc(d.x, d.y, 7.5, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(224, 247, 250, 0.75)';
         ctx.fill();
       }
+    }
+
+    // Animated Finger Guide (👆) for Young Kids before first dig
+    if (!state.hasDugThisLevel && lvl.hintPaths && lvl.hintPaths.length > 0) {
+      drawAnimatedFingerGuide(lvl.hintPaths[0]);
     }
 
     // Render Sparkles
@@ -1514,96 +1366,127 @@
     }
   }
 
+  function drawAnimatedFingerGuide(poly) {
+    if (!poly || poly.length < 2) return;
+    ctx.save();
+
+    // Soft glowing dotted trail along the first 2 segments
+    ctx.strokeStyle = 'rgba(255, 213, 79, 0.45)';
+    ctx.lineWidth = 6;
+    ctx.lineCap = 'round';
+    ctx.setLineDash([10, 12]);
+    ctx.beginPath();
+    ctx.moveTo(poly[0][0], poly[0][1]);
+    const maxIdx = Math.min(poly.length - 1, 2);
+    for (let i = 1; i <= maxIdx; i++) {
+      ctx.lineTo(poly[i][0], poly[i][1]);
+    }
+    ctx.stroke();
+
+    // Animated moving finger 👆 along the first segment
+    const t = ((state.frameTick * 0.015) % 1);
+    const x0 = poly[0][0];
+    const y0 = poly[0][1];
+    const x1 = poly[1][0];
+    const y1 = poly[1][1];
+    const fx = x0 + (x1 - x0) * t;
+    const fy = y0 + (y1 - y0) * t;
+
+    ctx.font = '34px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('👆', fx, fy + 12);
+    ctx.restore();
+  }
+
   function drawBathtubChamber() {
     const lvl = LEVELS[state.currentLevelIdx];
     const fillRatio = Math.min(1, state.bathDropsCollected / REQUIRED_BATH_DROPS);
 
     ctx.save();
 
-    // Chamber warm tiled backdrop
     ctx.fillStyle = 'rgba(16, 46, 74, 0.92)';
     ctx.strokeStyle = '#4fc3f7';
-    ctx.lineWidth = 2.5;
+    ctx.lineWidth = 3;
     ctx.beginPath();
-    ctx.roundRect(TUB_CHAMBER.x, TUB_CHAMBER.y, TUB_CHAMBER.w, TUB_CHAMBER.h, 16);
+    ctx.roundRect(TUB_CHAMBER.x, TUB_CHAMBER.y, TUB_CHAMBER.w, TUB_CHAMBER.h, 18);
     ctx.fill();
     ctx.stroke();
 
     // Pipe connecting Intake Funnel to Bathtub Showerhead
     ctx.strokeStyle = '#90a4ae';
-    ctx.lineWidth = 11;
+    ctx.lineWidth = 12;
     ctx.lineCap = 'round';
     ctx.beginPath();
     ctx.moveTo(FUNNEL.x, FUNNEL.y);
-    ctx.lineTo(TUB_CHAMBER.x + 25, FUNNEL.y);
-    ctx.lineTo(TUB_CHAMBER.x + 25, TUB_CHAMBER.y + 24);
-    ctx.lineTo(TUB_CHAMBER.x + 88, TUB_CHAMBER.y + 24);
+    ctx.lineTo(TUB_CHAMBER.x + 26, FUNNEL.y);
+    ctx.lineTo(TUB_CHAMBER.x + 26, TUB_CHAMBER.y + 24);
+    ctx.lineTo(TUB_CHAMBER.x + 94, TUB_CHAMBER.y + 24);
     ctx.stroke();
 
-    // Intake Funnel Mouth (Left of Chamber)
+    // Intake Funnel Mouth
     ctx.fillStyle = '#ffca28';
     ctx.strokeStyle = '#fff8e1';
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 2.5;
     ctx.beginPath();
-    ctx.moveTo(FUNNEL.x - 22, FUNNEL.y - 18);
-    ctx.lineTo(FUNNEL.x + 22, FUNNEL.y - 18);
-    ctx.lineTo(FUNNEL.x + 10, FUNNEL.y + 12);
-    ctx.lineTo(FUNNEL.x - 10, FUNNEL.y + 12);
+    ctx.moveTo(FUNNEL.x - 24, FUNNEL.y - 18);
+    ctx.lineTo(FUNNEL.x + 24, FUNNEL.y - 18);
+    ctx.lineTo(FUNNEL.x + 11, FUNNEL.y + 13);
+    ctx.lineTo(FUNNEL.x - 11, FUNNEL.y + 13);
     ctx.closePath();
     ctx.fill();
     ctx.stroke();
 
-    // Pulsing guide label above Funnel
-    const bounce = Math.sin(state.frameTick * 0.1) * 3;
-    ctx.fillStyle = '#ffd54f';
-    ctx.font = 'bold 11px sans-serif';
+    // Bouncing Visual Arrow above Funnel (Zero Text)
+    const bounce = Math.sin(state.frameTick * 0.1) * 4;
+    ctx.font = '22px sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('⬇️ 浴缸进水口', FUNNEL.x, FUNNEL.y - 25 + bounce);
+    ctx.fillText('⬇️', FUNNEL.x, FUNNEL.y - 28 + bounce);
 
-    // Draw Critter Avatar sitting inside the Bathtub
-    const avatarX = TUB_CHAMBER.x + 92;
-    const avatarY = TUB_CHAMBER.y + 72 + Math.sin(state.frameTick * 0.08) * 2.5;
+    // Critter Avatar sitting inside the Bathtub
+    const avatarX = TUB_CHAMBER.x + 96;
+    const avatarY = TUB_CHAMBER.y + 74 + Math.sin(state.frameTick * 0.08) * 2.5;
     const img = critterImages[lvl.id];
     if (img && img.complete) {
       ctx.save();
       ctx.beginPath();
-      ctx.arc(avatarX, avatarY, 31, 0, Math.PI * 2);
+      ctx.arc(avatarX, avatarY, 34, 0, Math.PI * 2);
       ctx.closePath();
       ctx.clip();
-      ctx.drawImage(img, avatarX - 31, avatarY - 31, 62, 62);
+      ctx.drawImage(img, avatarX - 34, avatarY - 34, 68, 68);
       ctx.restore();
 
       ctx.beginPath();
-      ctx.arc(avatarX, avatarY, 31, 0, Math.PI * 2);
+      ctx.arc(avatarX, avatarY, 34, 0, Math.PI * 2);
       ctx.strokeStyle = fillRatio >= 1 ? '#ffd54f' : '#81d4fa';
-      ctx.lineWidth = 3;
+      ctx.lineWidth = 3.5;
       ctx.stroke();
     }
 
     // Clawfoot Bathtub Lower Basin
     const tubX = TUB_CHAMBER.x + 20;
-    const tubY = TUB_CHAMBER.y + 82;
-    const tubW = 138;
-    const tubH = 48;
+    const tubY = TUB_CHAMBER.y + 84;
+    const tubW = 146;
+    const tubH = 50;
 
     ctx.save();
     ctx.beginPath();
-    ctx.roundRect(tubX, tubY, tubW, tubH, [6, 6, 22, 22]);
+    ctx.roundRect(tubX, tubY, tubW, tubH, [6, 6, 24, 24]);
     ctx.clip();
 
     ctx.fillStyle = 'rgba(225, 245, 254, 0.22)';
     ctx.fillRect(tubX, tubY, tubW, tubH);
 
     const waterH = Math.max(6, tubH * fillRatio);
-    ctx.fillStyle = 'rgba(41, 182, 246, 0.84)';
+    ctx.fillStyle = 'rgba(41, 182, 246, 0.85)';
     ctx.fillRect(tubX, tubY + tubH - waterH, tubW, waterH);
 
-    if (fillRatio > 0.08) {
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.88)';
+    if (fillRatio > 0.06) {
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
       for (let bx = tubX + 10; bx < tubX + tubW - 8; bx += 14) {
         const by = tubY + tubH - waterH + Math.sin(state.frameTick * 0.08 + bx) * 2;
         ctx.beginPath();
-        ctx.arc(bx, by, 6.5, 0, Math.PI * 2);
+        ctx.arc(bx, by, 7, 0, Math.PI * 2);
         ctx.fill();
       }
     }
@@ -1612,28 +1495,24 @@
     ctx.strokeStyle = '#ffffff';
     ctx.lineWidth = 3.5;
     ctx.beginPath();
-    ctx.roundRect(tubX, tubY, tubW, tubH, [6, 6, 22, 22]);
+    ctx.roundRect(tubX, tubY, tubW, tubH, [6, 6, 24, 24]);
     ctx.stroke();
 
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 12px sans-serif';
+    // Pure Emoji Icon on Tub Front
+    ctx.font = '20px sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText(
-      `🛁 ${Math.min(100, Math.round(fillRatio * 100))}%`,
-      tubX + tubW * 0.5,
-      tubY + tubH * 0.62
-    );
+    ctx.fillText(fillRatio >= 1 ? '🥰🫧' : '🛁', tubX + tubW * 0.5, tubY + tubH * 0.65);
 
     ctx.restore();
   }
 
-  // Auto-Carve Hint Path Helper
   function autoCarveHintSolution() {
     const lvl = LEVELS[state.currentLevelIdx];
     if (!lvl.hintPaths) return;
 
     const prevTool = state.activeTool;
     state.activeTool = 'dig';
+    state.hasDugThisLevel = true;
 
     for (let gy = 2; gy < GH - 2; gy++) {
       for (let gx = 2; gx < GW - 2; gx++) {
@@ -1647,7 +1526,7 @@
       for (let i = 0; i < poly.length - 1; i++) {
         const [x0, y0] = poly[i];
         const [x1, y1] = poly[i + 1];
-        applyToolSegment(x0, y0, x1, y1, 27);
+        applyToolSegment(x0, y0, x1, y1, 28);
       }
     });
 
@@ -1655,34 +1534,25 @@
     state.terrainDirty = true;
 
     addBonusCleanWater(40);
-    showToast('💡 已为你自动挖通黄金引水水道并补充清水！');
+    showToast('💡 ✨ 💧');
   }
 
   function addBonusCleanWater(amount = 45) {
     const lvl = LEVELS[state.currentLevelIdx];
-    const spawnX = lvl.id === 6 ? 115 : 135;
-    const spawnY = lvl.id === 6 ? 175 : 62;
+    const spawnX = lvl.id === 6 ? 120 : 145;
+    const spawnY = lvl.id === 6 ? 180 : 62;
     builderApi.carveCircle(spawnX, spawnY, 26, EMPTY, false);
     builderApi.spawnPool(spawnX - 35, spawnY - 14, 70, 28, DROP_WATER, amount);
     state.terrainDirty = true;
     sfx.playSplash();
-    showToast(`🌧️ 加水喷头已注入 +${amount} 滴清澈洗澡水！`);
+    showToast('🌧️ 💧');
   }
 
-  // Update Sidebar UI & Level Buttons
-  function updateSidebarUI() {
+  function updateVisualHUD() {
     const lvl = LEVELS[state.currentLevelIdx];
-    headerCritterIcon.src = lvl.icon;
     sideCritterImg.src = lvl.icon;
-    sideLevelBadge.textContent = `第 ${lvl.id} 关`;
-    sideScentBadge.textContent = lvl.scent;
-    sideCritterName.textContent = lvl.name;
-    sideLevelTitle.textContent = lvl.title;
-    critterSpeechBubble.textContent = lvl.quote;
-    levelTipText.textContent = lvl.tip;
 
     const earnedDucks = state.ducks.filter(d => d.collected).length;
-    duckCountText.textContent = `${earnedDucks} / 3 只`;
     for (let i = 0; i < 3; i++) {
       const slot = document.getElementById(`duckSlot${i}`);
       if (slot) {
@@ -1691,36 +1561,15 @@
     }
 
     const pct = Math.min(100, Math.round((state.bathDropsCollected / REQUIRED_BATH_DROPS) * 100));
-    bathProgressText.textContent = `${pct}% (${Math.min(REQUIRED_BATH_DROPS, state.bathDropsCollected)} / ${REQUIRED_BATH_DROPS} 滴)`;
     bathProgressBar.style.width = `${pct}%`;
 
     if (pct >= 100) {
-      critterMoodBadge.textContent = '✨ 香喷喷';
+      critterMoodBadge.textContent = '🥰';
     } else if (pct > 0) {
-      critterMoodBadge.textContent = '🫧 洗澡中';
+      critterMoodBadge.textContent = '🫧';
     } else {
-      critterMoodBadge.textContent = '🧼 等洗澡';
+      critterMoodBadge.textContent = '🧼';
     }
-
-    updateWaterCounters();
-  }
-
-  function updateWaterCounters() {
-    let clean = 0;
-    let ooze = 0;
-    let steam = 0;
-    for (let i = 0; i < state.drops.length; i++) {
-      const t = state.drops[i].type;
-      if (t === DROP_WATER) clean++;
-      else if (t === DROP_OOZE) ooze++;
-      else if (t === DROP_STEAM) steam++;
-    }
-    statCleanDrops.textContent = `${clean} 滴`;
-    statOozeDrops.textContent = `${ooze} 滴`;
-    statSteamDrops.textContent = `${steam} 团`;
-
-    const totalDucks = Object.values(state.progressByLevel).reduce((a, b) => a + b, 0);
-    statTotalDucks.textContent = `${totalDucks} / ${LEVELS.length * 3}`;
   }
 
   function renderLevelNav() {
@@ -1733,16 +1582,14 @@
         (idx === state.currentLevelIdx ? ' active' : '') +
         (earned > 0 ? ' completed' : '');
       btn.innerHTML = `
-        <img src="${lvl.icon}" alt="${lvl.name}" />
-        <span>LV.${lvl.id} ${lvl.name.split(' ')[0]}</span>
-        <span class="pill-ducks">${earned > 0 ? '🐤'.repeat(earned) : ''}</span>
+        <img src="${lvl.icon}" alt="" />
+        ${earned > 0 ? `<span class="pill-ducks">${'🐤'.repeat(earned)}</span>` : ''}
       `;
       btn.addEventListener('click', () => loadLevel(idx));
       levelNavBar.appendChild(btn);
     });
   }
 
-  // Pointer Events on Canvas
   function getCanvasCoords(e) {
     const rect = canvas.getBoundingClientRect();
     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
@@ -1777,18 +1624,13 @@
     state.lastPointer = null;
   });
 
-  // Tool & Helper Button Bindings
-  document.querySelectorAll('.tool-btn').forEach(btn => {
+  document.querySelectorAll('.toy-btn[data-tool]').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.toy-btn[data-tool]').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       state.activeTool = btn.dataset.tool;
-      const toolNames = {
-        dig: '⛏️ 已切换至「挖土开路」模式',
-        fill: '🧱 已切换至「填土堵漏」模式',
-        purify: '✨ 已切换至「净水除苔」模式（涂抹毒水或绿藻即可净化）'
-      };
-      showToast(toolNames[state.activeTool] || '');
+      const icons = { dig: '⛏️', fill: '🧱', purify: '✨' };
+      showToast(icons[state.activeTool] || '⛏️');
     });
   });
 
@@ -1802,7 +1644,7 @@
 
   document.getElementById('btnResetLevel').addEventListener('click', () => {
     loadLevel(state.currentLevelIdx);
-    showToast('🔄 本关地形与水源已重置！');
+    showToast('🔄');
   });
 
   document.getElementById('btnWinReplay').addEventListener('click', () => {
@@ -1817,21 +1659,12 @@
     document.getElementById('finaleModal').classList.add('hidden');
   });
 
-  document.getElementById('btnGuideModal').addEventListener('click', () => {
-    document.getElementById('guideModal').classList.remove('hidden');
-  });
-
-  document.getElementById('btnGuideClose').addEventListener('click', () => {
-    document.getElementById('guideModal').classList.add('hidden');
-  });
-
   const btnSoundToggle = document.getElementById('btnSoundToggle');
   btnSoundToggle.addEventListener('click', () => {
     sfx.enabled = !sfx.enabled;
-    btnSoundToggle.textContent = sfx.enabled ? '🔊 音效: 开' : '🔇 音效: 关';
+    btnSoundToggle.textContent = sfx.enabled ? '🔊' : '🔇';
   });
 
-  // Main Animation Loop
   function loop() {
     stepPhysics();
     stepPhysics();
